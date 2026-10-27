@@ -115,6 +115,7 @@ export function AddEnvironmentDialog({
   const [savedBackendSshUsername, setSavedBackendSshUsername] = useState("");
   const [savedBackendSshPort, setSavedBackendSshPort] = useState("");
   const [sshHostSuggestionsOpen, setSshHostSuggestionsOpen] = useState(false);
+  const selectedConnectionModeRef = useRef<HTMLButtonElement>(null);
   const highlightedSshHostRef = useRef<DesktopDiscoveredSshHost | undefined>(undefined);
   const [isAddingSavedBackend, setIsAddingSavedBackend] = useState(false);
   const isSshDiscoveryActive = desktopBridge !== undefined && open && savedBackendMode === "ssh";
@@ -343,6 +344,7 @@ export function AddEnvironmentDialog({
     const selected = savedBackendMode === input.mode;
     return (
       <button
+        ref={selected ? selectedConnectionModeRef : undefined}
         type="button"
         aria-pressed={selected}
         className={cn(
@@ -609,7 +611,7 @@ export function AddEnvironmentDialog({
         />
         <TooltipPopup side="top">Add environment</TooltipPopup>
       </Tooltip>
-      <DialogPopup className="max-h-[80dvh] sm:max-w-3xl">
+      <DialogPopup className="max-h-[80dvh] sm:max-w-3xl" initialFocus={selectedConnectionModeRef}>
         <DialogHeader>
           <DialogTitle>
             {routeTarget ? `Add a route to ${routeTarget.label}` : "Add Environment"}
